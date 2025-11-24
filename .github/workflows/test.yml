@@ -36,4 +36,3 @@ jobs:
           title: "Auto PR: Merge staging into main"
           body: "This PR was automatically created or updated after a push to the staging branch. Please review and merge."
           draft: false
-          update_existing: true
