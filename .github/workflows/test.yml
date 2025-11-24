@@ -26,13 +26,9 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
-      - name: Create Pull Request into main
-        id: pr
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          base: main
-          branch: staging
-          title: "Auto PR: Merge staging into main"
-          body: "This PR was automatically created or updated after a push to the staging branch. Please review and merge."
-          draft: false
+      - name: Merge staging into main
+        run: |
+          git fetch origin main
+          git checkout main
+          git merge origin/staging --no-edit || true
+          git push origin main 
