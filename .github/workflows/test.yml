@@ -1,0 +1,39 @@
+name: Auto PR To Main
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - staging 
+
+jobs:
+  create-pull-request:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write   
+      pull-requests: write
+
+    steps:
+      - name: Checkout staging branch
+        uses: actions/checkout@v4
+        with:
+          ref: staging
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Create Pull Request into main
+        id: pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          branch: staging
+          title: "Auto PR: Merge staging into main"
+          body: "This PR was automatically created or updated after a push to the staging branch. Please review and merge."
+          draft: false
+          update_existing: true
